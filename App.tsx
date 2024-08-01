@@ -6,7 +6,8 @@ import Task from "./components/task";
 import CreateTask from "./components/createTask";
 
 /*  TODO:
-    -Finish createTask.tsx
+    -Finish createTask.  Look into Modal(react-native component).
+            https://blog.logrocket.com/building-react-native-forms-with-ui-components/
     -Look into how to switch screens/components
     -Local Date and Time formats and form inputs
     -Look into:  IOS alerts, IOS notifications, IOS local storage(SecureStore/Expo FileSystem)
