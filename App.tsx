@@ -1,14 +1,51 @@
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ITask } from "./types";
+import Task from "./components/task";
+import CreateTask from "./components/createTask";
 
 export default function App() {
+
+  const dummyTask:ITask = {
+    name: 'Work Out',
+    description: `Let's get that summer bod fam'`,
+    date: '8/1/2024', // find better units later
+    time: '10:00AM',
+    repeat: true,
+    frequency: ['Tuesday', 'Thursday', 'Saturday'],
+    sound: false,
+  }
+  
+  const dummyTask2:ITask = {
+    name: 'Clean House',
+    description: 'You really gotta get this place together',
+    date: '7/31/24', // find better units later
+    time: '4:00PM',
+    repeat: false,
+    frequency: ['Monday'],
+    sound: true,
+  }
+
+  const [toDo, setToDo] = useState<ITask>();
+  const [creatingTask, setCreatingTask] = useState(false);
+  const [taskList, setTaskList] = useState<ITask[]>([dummyTask, dummyTask2,]);
+  
   return (
     <View style={styles.mainContainer}>
-      <View>
-        <Text>Open up App.tsx to start working on your app!</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Re:reMember</Text>
+        
+        <View>
+          {
+            taskList.map((task) => (
+              <Task toDo={task} />
+            ))
+          }
+        </View>
+
+        <CreateTask toDo={dummyTask}/>
       </View>
-
-
       {/* <StatusBar style="auto" /> */}
     </View>
   );
@@ -17,8 +54,16 @@ export default function App() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  container: {
+    paddingTop: 80,
+    paddingHorizontal: 20,
+
+    borderWidth: 1,
+    borderColor: 'red',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
