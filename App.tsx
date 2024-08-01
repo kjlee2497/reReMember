@@ -1,12 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { ITask } from "./types";
 import Task from "./components/task";
 import CreateTask from "./components/createTask";
+import ReactNativeModal from "react-native-modal";
 
 /*  TODO:
-    -Finish createTask.  Look into Modal(react-native component).
+    -Finish createTask.  Look into Modal(react-native component) and link below
             https://blog.logrocket.com/building-react-native-forms-with-ui-components/
     -Look into how to switch screens/components
     -Local Date and Time formats and form inputs
@@ -14,56 +22,78 @@ import CreateTask from "./components/createTask";
 */
 
 export default function App() {
-
-  const dummyTask:ITask = {
-    name: 'Work Out',
+  const dummyTask: ITask = {
+    name: "Work Out",
     description: `Let's get that summer bod fam'`,
-    date: '8/1/2024', // find better units later
-    time: '10:00AM',
+    date: "8/1/2024", // find better units later
+    time: "10:00AM",
     repeat: true,
-    frequency: ['Tuesday', 'Thursday', 'Saturday'],
+    frequency: ["Tuesday", "Thursday", "Saturday"],
     sound: false,
-  }
-  
-  const dummyTask2:ITask = {
-    name: 'Clean House',
-    description: 'You really gotta get this place together',
-    date: '7/31/24', // find better units later
-    time: '4:00PM',
-    repeat: false,
-    frequency: ['Monday'],
-    sound: true,
-  }
+  };
 
-  const blankTask:ITask = {
-    name: '',
-    description: '',
-    date: '',
-    time: '',
+  const dummyTask2: ITask = {
+    name: "Clean House",
+    description: "You really gotta get this place together",
+    date: "7/31/24", // find better units later
+    time: "4:00PM",
+    repeat: false,
+    frequency: ["Monday"],
+    sound: true,
+  };
+
+  const blankTask: ITask = {
+    name: "",
+    description: "",
+    date: "",
+    time: "",
     repeat: false,
     frequency: [],
     sound: false,
-  }
+  };
 
   const [toDo, setToDo] = useState<ITask>();
-  const [creatingTask, setCreatingTask] = useState(false);
-  const [taskList, setTaskList] = useState<ITask[]>([dummyTask, dummyTask2,]);
-  
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [taskList, setTaskList] = useState<ITask[]>([dummyTask, dummyTask2]);
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const submitTask = () => {
+    
+    setIsModalVisible(!isModalVisible);
+  }
+
   return (
     <View style={styles.mainContainer}>
+      
       <View style={styles.container}>
         <Text style={styles.title}>Re:reMember</Text>
-        
-        <View>
-          {
-            taskList.map((task) => (
-              <Task toDo={task} />
-            ))
-          }
-        </View>
 
-        <CreateTask toDo={blankTask}/>
+        <View>
+          {taskList.map((task) => (
+            <Task toDo={task} />
+          ))}
+        </View>
       </View>
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.form}
+        >
+          <ReactNativeModal
+            animationOutTiming={1000}
+            animationOut={"slideOutUp"}
+            isVisible={isModalVisible}
+            backdropOpacity={0.85}
+          >
+            <CreateTask toDo={blankTask} />
+            <Button title="Add Task" onPress={toggleModal} />
+          </ReactNativeModal>
+
+          <Button title="+" onPress={toggleModal} />
+        </KeyboardAvoidingView>
       {/* <StatusBar style="auto" /> */}
     </View>
   );
@@ -76,12 +106,14 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 80,
     paddingHorizontal: 20,
-
-    borderWidth: 1,
-    borderColor: 'red',
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-});
+  form: {
+    position: 'absolute',
+    bottom: 60,
+    width: '100%',
+  },
+})
