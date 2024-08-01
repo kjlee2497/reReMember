@@ -5,6 +5,13 @@ import { ITask } from "./types";
 import Task from "./components/task";
 import CreateTask from "./components/createTask";
 
+/*  TODO:
+    -Finish createTask.tsx
+    -Look into how to switch screens/components
+    -Local Date and Time formats and form inputs
+    -Look into:  IOS alerts, IOS notifications, IOS local storage(SecureStore/Expo FileSystem)
+*/
+
 export default function App() {
 
   const dummyTask:ITask = {
@@ -27,6 +34,16 @@ export default function App() {
     sound: true,
   }
 
+  const blankTask:ITask = {
+    name: '',
+    description: '',
+    date: '',
+    time: '',
+    repeat: false,
+    frequency: [],
+    sound: false,
+  }
+
   const [toDo, setToDo] = useState<ITask>();
   const [creatingTask, setCreatingTask] = useState(false);
   const [taskList, setTaskList] = useState<ITask[]>([dummyTask, dummyTask2,]);
@@ -44,7 +61,7 @@ export default function App() {
           }
         </View>
 
-        <CreateTask toDo={dummyTask}/>
+        <CreateTask toDo={blankTask}/>
       </View>
       {/* <StatusBar style="auto" /> */}
     </View>
