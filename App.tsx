@@ -12,6 +12,7 @@ import { ITask } from "./types";
 import Task from "./components/task";
 import CreateTask from "./components/createTask";
 import ReactNativeModal from "react-native-modal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*  TODO:
     -Finish createTask.  Look into Modal(react-native component) and link below
@@ -60,14 +61,45 @@ export default function App() {
     setIsModalVisible(!isModalVisible);
   };
 
+  /*
+  const storeData = async (value: ITask) => {
+    try {
+      await AsyncStorage.setItem('my-key', JSON.stringify(value));
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  getMyObject = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@key')
+      return jsonValue != null ? JSON.parse(jsonValue) : null
+    } catch(e) {
+      // read error
+    }
+
+    console.log('Done.')
+  }
+
+  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('@MyApp_key')
+    } catch(e) {
+      // remove error
+    }
+  
+    console.log('Done.')
+  }
+  */
+
+
   const submitTask = () => {
-    
     setIsModalVisible(!isModalVisible);
   }
 
   return (
     <View style={styles.mainContainer}>
-      
+
       <View style={styles.container}>
         <Text style={styles.title}>Re:reMember</Text>
 
@@ -78,22 +110,22 @@ export default function App() {
         </View>
       </View>
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.form}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.form}
+      >
+        <ReactNativeModal
+          animationOutTiming={1000}
+          animationOut={"slideOutUp"}
+          isVisible={isModalVisible}
+          backdropOpacity={0.85}
         >
-          <ReactNativeModal
-            animationOutTiming={1000}
-            animationOut={"slideOutUp"}
-            isVisible={isModalVisible}
-            backdropOpacity={0.85}
-          >
-            <CreateTask toDo={blankTask} />
-            <Button title="Add Task" onPress={toggleModal} />
-          </ReactNativeModal>
+          <CreateTask toDo={blankTask} />
+          <Button title="Add Task" onPress={toggleModal} />
+        </ReactNativeModal>
 
-          <Button title="+" onPress={toggleModal} />
-        </KeyboardAvoidingView>
+        <Button title="+" onPress={toggleModal} />
+      </KeyboardAvoidingView>
       {/* <StatusBar style="auto" /> */}
     </View>
   );
