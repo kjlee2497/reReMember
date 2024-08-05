@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
     bottom: 60,
     width: '100%',
   },
-})
+})git
