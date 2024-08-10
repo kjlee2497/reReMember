@@ -70,17 +70,6 @@ export default function App() {
     }
   };
 
-  getMyObject = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@key')
-      return jsonValue != null ? JSON.parse(jsonValue) : null
-    } catch(e) {
-      // read error
-    }
-
-    console.log('Done.')
-  }
-
   const removeValue = async () => {
     try {
       await AsyncStorage.removeItem('@MyApp_key')
@@ -92,9 +81,20 @@ export default function App() {
   }
   */
 
+  const getMyObject = async (key:string) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key)
+      return jsonValue != null ? JSON.parse(jsonValue) : null
+    } catch(e) {
+      // read error
+    }
+
+    console.log('Done.')
+  }
 
   const submitTask = () => {
     setIsModalVisible(!isModalVisible);
+    getMyObject("task1");
   }
 
   return (
